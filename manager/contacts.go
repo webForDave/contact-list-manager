@@ -46,3 +46,17 @@ func (cl *ContactList) AddContact(contact Contact) error{
 func (cl *ContactList) GetAllContacts() []Contact{
 	return cl.Contacts
 }
+
+var ErrContactNotFound error = errors.New("contact not found")
+
+// GetContactByEmail searches the ContactList slice for a matching email.
+// Returns a pointer to the contact if there's a match
+// or an error if the email doesn't exist.
+func (cl *ContactList) FindContactByEmail(email string) (*Contact, error){
+	for _, c := range cl.Contacts{
+		if email == c.Email{
+			return &c, nil
+		}
+	}
+	return nil, ErrContactNotFound
+}

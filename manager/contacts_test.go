@@ -73,12 +73,32 @@ func TestContactList(t *testing.T){
 	t.Run("Empty contact list", func(t *testing.T){
 		list := ContactList{}
 
-		got := list.Contacts
+		got := list.GetAllContacts()
 		expect := []Contact{}
 
 		if !slices.Equal(got, expect){
 			t.Errorf("Got: %v, Expect: %v", got, expect)
 		}
+	})
+
+	t.Run("Get contact by email", func(t *testing.T){
+		contact1 := Contact{Name: "David", Email: "dakinola54@gmail.com", Phone: "09077565788"}
+
+		list := ContactList{}
+		list.AddContact(contact1) 
+
+		got, err := list.FindContactByEmail("dakinola54@gmail.com")
+		expect := Contact{Name: "David", Email: "dakinola54@gmail.com", Phone: "09077565788"}
+
+		if err == ErrContactNotFound{
+			t.Errorf("%q", err)
+			return 
+		}
+
+		if *got != expect{
+			t.Errorf("Got: %q Expect: %q", got, expect)
+		}
+
 	})
 
 	t.Run("All contacts", func(t *testing.T){
